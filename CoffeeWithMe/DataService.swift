@@ -10,19 +10,20 @@ import Foundation
 import Firebase
 
 class DataService {
-    static let dataService = DataService()
+    static let shared = DataService()
     
-    private lazy var rootRef: FIRDatabaseReference = FIRDatabase.database().reference()
-    private lazy var postsRef: FIRDatabaseReference = self.rootRef.child("posts")
-    private lazy var usersRef: FIRDatabaseReference = self.rootRef.child("users")
+    lazy var baseRef: FIRDatabaseReference = FIRDatabase.database().reference()
+    lazy var postsRef: FIRDatabaseReference = self.baseRef.child(FirebaseRefKey.posts)
+    lazy var usersRef: FIRDatabaseReference = self.baseRef.child(FirebaseRefKey.users)
     
-    private lazy var currentUsersRef: FIRDatabaseReference = {
+    lazy var currentUsersRef: FIRDatabaseReference = {
         let uid = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaultsKey.uid) as! String
         let user = self.usersRef.child(uid)
         return user
     }()
     
     func createFirebaseUser(uid: String, user: Dictionary<String, String>) {
+        NSUserDefaults.standardUserDefaults().setValue(uid, forKey: UserDefaultsKey.uid)
         usersRef.child(uid).updateChildValues(user)
     }
 }

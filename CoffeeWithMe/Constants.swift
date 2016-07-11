@@ -11,3 +11,14 @@ import Foundation
 enum UserDefaultsKey {
     static let uid = "uid"
 }
+
+enum FirebaseStatus {
+    static let missingCredents = -5
+    static let accountNoExist = -8
+}
+
+enum FirebaseRefKey {
+    static let users = "users"
+    static let posts = "posts"
+    static let likes = "likes"
+}
